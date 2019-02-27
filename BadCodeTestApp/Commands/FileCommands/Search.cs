@@ -14,7 +14,19 @@ namespace BadCodeTestApp.Commands.FileCommands
             return CommandPattern;
         }
 
-        public virtual void Execute(string command, string param)
+        public void Execute(string command, string param)
+        {
+            try
+            {
+                TemplateMethod(command, param);
+            }
+            catch (IOException)
+            {
+                Console.WriteLine("Incorrect args or file doesn't exist");
+            }
+        }
+
+        protected virtual void TemplateMethod(string command, string param)
         {
             GeneralSearch(param).ForEach(n => Console.WriteLine(n));
         }

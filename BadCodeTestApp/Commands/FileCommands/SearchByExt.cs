@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 
 namespace BadCodeTestApp.Commands.FileCommands
@@ -15,10 +14,10 @@ namespace BadCodeTestApp.Commands.FileCommands
             return CommandPattern;
         }
 
-        public override void Execute(string command, string param)
+        protected override void TemplateMethod(string command, string param)
         {
-            this._command = command;
-            Search(param).ToList<string>().ForEach(n => Console.WriteLine(n));
+            _command = command;
+            Search(param).ToList().ForEach(n => Console.WriteLine(n));
         }
 
         private IEnumerable<string> Search(string param)

@@ -2,7 +2,7 @@
 
 namespace BadCodeTestApp.Commands.FileCommands
 {
-    class Delete : ICommand
+    class Remove : ICommand
     {
         private const string CommandPattern = @"^remove_[a-z]+$";
 

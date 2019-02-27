@@ -1,42 +1,33 @@
-﻿using BadCodeTestApp.Commands;
-using BadCodeTestApp.Commands.FileCommands;
-using System;
-using System.Collections.Generic;
+﻿using System;
+using System.Linq;
+using System.Reflection;
 using System.Text.RegularExpressions;
+using BadCodeTestApp.Commands;
 
 namespace BadCodeTestApp
 {
     class Program
     {
-        private static List<ICommand> Commands = new List<ICommand>();
-
-        static Program()
-        {
-            Register();
-        }
-
-        static void Register()
-        {
-            Commands.Add(new Search());
-            Commands.Add(new SearchByExt());
-            Commands.Add(new Delete());
-            Commands.Add(new Create());
-        }
 
         public static void Main(string[] args)
         {
             string command = args[0];
             string param = args[1];
-            foreach (ICommand n in Commands)
+            
+            var commands = from type in Assembly.GetExecutingAssembly().GetTypes()
+                where type.GetInterfaces().Contains(typeof(ICommand))
+                      && type.GetConstructor(Type.EmptyTypes) != null
+                select Activator.CreateInstance(type) as ICommand;
+
+            foreach (var c in commands)
             {
-                if (Regex.IsMatch(command, n.GetCommandPattern(), RegexOptions.IgnoreCase))
+                if (Regex.IsMatch(command, c.GetCommandPattern(), RegexOptions.IgnoreCase))
                 {
-                    n.Execute(command, param);
+                    c.Execute(command, param);
                     break;
                 }
             }
-
-            Console.ReadLine();
+            
         }
     }
 }

@@ -18,7 +18,7 @@ namespace BadCodeTestApp.Commands.FileCommands
 
         private static string GetExtension(string str)
         {
-            return "." + (string)str.Split('_').GetValue(1);
+            return "." + (string) str.Split('_').GetValue(1);
         }
     }
 }
