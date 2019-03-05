@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
+using System.Reflection;
+using BadCodeTestApp.Commands;
 
 namespace BadCodeTestApp
 {
@@ -9,37 +9,19 @@ namespace BadCodeTestApp
     {
         static void Main(string[] args)
         {
-            string command = args[0];
-            string param = args[1];
+            var commands = from type in Assembly.GetExecutingAssembly().GetTypes()
+                where type.GetInterfaces().Contains(typeof(ICommand))
+                      && type.GetConstructor(Type.EmptyTypes) != null
+                select Activator.CreateInstance(type) as ICommand;
 
-            if (command == "search")
+            foreach (var c in commands)
             {
-                Directory.GetFiles(param, "*", SearchOption.AllDirectories).ToList().ForEach(n => Console.WriteLine(n));
-            }
-
-            if (command == "cs_search")
-            {
-                List<string> res = Directory.GetFiles(param, "*", SearchOption.AllDirectories).ToList();
-                foreach (string n in res)
+                if (args[0].Equals(c.GetStringCommand()))
                 {
-                    if (n.Substring(n.LastIndexOf(".") + 1) == "cs")
-                    {
-                        Console.WriteLine(n);
-                    }
+                    c.Execute(args);
+                    break;
                 }
             }
-
-            if (command == "create_txt")
-            {
-                File.Create(param + "\\test.txt");
-            }
-
-            if (command == "remove_txt")
-            {
-                File.Delete(param + "\\test.txt");
-            }
-
-            Console.ReadLine();
         }
     }
 }
