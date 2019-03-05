@@ -20,13 +20,14 @@ namespace BadCodeTestApp.Commands.FileCommands
             {
                 searchMask = args[2];
             }
-
             GeneralSearch(path, searchMask).ForEach(n => Console.WriteLine(n));
         }
 
         protected List<string> GeneralSearch(string param, string mask)
         {
-            return Directory.GetFiles(param, mask, SearchOption.AllDirectories).ToList();
+            List<string> listSearch = Directory.GetFiles(param, mask, SearchOption.AllDirectories).ToList();
+            Program.Logger.Debug("Count of the found files is {0}.", listSearch.Count);
+            return listSearch;
         }
     }
 }

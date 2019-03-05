@@ -14,12 +14,12 @@ namespace BadCodeTestApp.Commands.FileCommands
         {
             if (File.Exists(args[1]))
             {
-                Program.Logger.Debug("File " + args[1] + " is already exist.");
+                Program.Logger.Debug("File {0} is already exist.", args[1]);
                 Console.WriteLine("The file is already exist.");
                 return;
             }
 
-            Program.Logger.Debug("File " + args[1] + " create.");
+            Program.Logger.Debug("File {0} create.", args[1]);
             File.Create(args[1]);
         }
     }

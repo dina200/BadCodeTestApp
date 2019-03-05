@@ -14,14 +14,14 @@ namespace BadCodeTestApp.Commands.FileCommands
         {
             if (!File.Exists(args[1]))
             {
-                Program.Logger.Debug("File " + args[1] + " isn't exist in the directory and can't be removed.");
+                Program.Logger.Debug("File {0} isn't exist in the directory and can't be removed.", args[1]);
                 Console.WriteLine("The file isn't exist in the directory, use command \"search\" to find path to your file and try again.");
                 return;
             }
-            Program.Logger.Debug("File " + args[1] + " is exist and can be removed.");
+            Program.Logger.Debug("File {0} is exist and can be removed.", args[1]);
             File.Delete(args[1]);
             Console.WriteLine("The file is removed.");
-            Program.Logger.Debug("File " + args[1] + " is removed.");
+            Program.Logger.Debug("File {0} is removed.", args[1]);
         }
     }
 }
